@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Motorista;
-
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +16,11 @@ use App\Models\Motorista;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Create
+Route::get('/motoristas/cadastro', function () {
+    return view('cadastro');
 });
 
-//Create
 Route::post('/cadastro', function(Request $cadastro)
 {
     Motorista::create([
@@ -28,18 +28,14 @@ Route::post('/cadastro', function(Request $cadastro)
         'cpf' => $cadastro->cpf,
         'cnh' => $cadastro->cnh,
     ]);
-    echo 'Motorista cadastrado com sucesso!';
+    return redirect('/');
 });
 
 //Read
-Route::get('/motoristas', function()
+Route::get('/', function ()
 {
     $motoristas = Motorista::all();
-    echo "Lista de motoristas cadastrados <br><br>";
-    foreach($motoristas as $motorista)
-    {
-        echo "Nome: $motorista->nome <br> ID: $motorista->id <br> CPF: $motorista->cpf <br> CNH: $motorista->cnh <br><br>";
-    };
+    return view('welcome', ['motoristas' => $motoristas]);
 });
 
 //Update
@@ -49,15 +45,14 @@ Route::get('/motoristas/alterar/{id_motorista}', function($id_motorista)
     return view('alterar_motorista', ['motorista' => $motorista]);
 });
 
-Route::put('/motoristas/atualizar/{id_motorista}', function(Request $cadastro , $id_motorista)
+Route::get('/motoristas/atualizar/{id_motorista}', function(Request $cadastro , $id_motorista)
 {
     $motorista = Motorista::findOrFail($id_motorista);
     $motorista->nome = $cadastro->nome_do_motorista;
     $motorista->cpf = $cadastro->cpf;
     $motorista->cnh = $cadastro->cnh;
     $motorista->save();
-    echo 'Dados do motorista alterados com sucesso!';
-
+    return redirect('/');
 });
 
 //Delete
@@ -65,5 +60,5 @@ Route::get('/motoristas/excluir/{id_motorista}', function($id_motorista)
 {
     $motorista = Motorista::findOrFail($id_motorista);
     $motorista->delete();
-    echo 'Dados do motorista excluido com sucesso!';
+    return redirect('/');
 });

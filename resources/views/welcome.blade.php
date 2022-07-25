@@ -12,19 +12,27 @@
 </head>
 
 <body>
-    <div class="mb-3 form-group">
-    <form action="/cadastro" method="POST" >
-        @csrf
-        @method("POST")
-        <label for="">NOME:</label>
-        <input type="text" class="form-control" placeholder="Digite seu nome " name="nome_do_motorista"><br><br>
-        <label for="">CPF:</label>
-        <input type="text" class="form-control" placeholder="Digite seu CPF " name="cpf"><br><br>
-        <label for="">CNH:</label>
-        <input type="text" class="form-control" placeholder="Número da sua CNH " name="cnh"><br><br>
-        <button class="btn btn-primary">Cadastrar</button>
-    </form>
-    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>CNH</th>
+            <th>Editar</th>
+            <th>Excluir</th>
+        </tr>
+        <tr>
+            @foreach($motoristas as $motorista)
+            <td>{{$motorista->id}}</td>
+            <td>{{$motorista->nome}}</td>
+            <td>{{$motorista->cpf}}</td>
+            <td>{{$motorista->cnh}}</td>
+            <td><a class="btn btn-primary" href="/motoristas/alterar/{{ $motorista->id }}">Editar</a></td>
+            <td><a class="btn btn-primary" href="/motoristas/excluir/{{ $motorista->id }}">Excluir</a></td>
+        </tr>
+        @endforeach
+</table>
+<td><a class="btn btn-primary" href="/motoristas/cadastro">Cadastrar</a></td>
 </body>
 
 </html>
